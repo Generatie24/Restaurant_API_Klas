@@ -35,5 +35,13 @@ namespace Restaurant_API_Klas.Extensions
                 SpecialRequests = dto.SpecialRequests
             };
         }
+
+        public static void UpdateReservation(this Reservation reservation, UpdateReservationDto dto)
+        {
+            reservation.CustomerId = dto.CustomerId;
+            reservation.TableId = dto.TableId;
+            reservation.DateTime = dto.DateTime;    
+            reservation.SpecialRequests = dto.SpecialRequests;
+        }
     }
 }

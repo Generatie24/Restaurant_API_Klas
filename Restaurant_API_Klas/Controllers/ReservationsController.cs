@@ -17,6 +17,7 @@ namespace Restaurant_API_Klas.Controllers
                 _context = context;
         }
 
+        // Read all reservations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDetailsDto>>> GetReservations()
         {
@@ -36,6 +37,8 @@ namespace Restaurant_API_Klas.Controllers
 
 
         }
+
+        // Read one reservation
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDetailsDto>> GetReservation(int id)
         {
@@ -52,6 +55,8 @@ namespace Restaurant_API_Klas.Controllers
             return Ok(reservation.ToReservationDetailsDto());
         }
 
+
+        // Create a new reservation
         [HttpPost]
         public async Task<ActionResult<ReservationDetailsDto>> PostReserVation(CreateReservationDto dto)
         {
@@ -83,6 +88,43 @@ namespace Restaurant_API_Klas.Controllers
             return CreatedAtAction(nameof(GetReservation),  // Read Action
                 new { id = reservation.ReservationId },     // Route value
                 createdReservation.ToReservationDetailsDto()); // Response body
+        }
+
+        // update/edit  one reservation
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> PutReservation(int id, UpdateReservationDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            reservation.UpdateReservation(dto);
+            _context.Entry(reservation).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        // delete one reservation
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReservation(int id)
+        {
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            _context.Reservations.Remove(reservation);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
     }
