@@ -19,5 +19,10 @@ namespace Restaurant_API_Klas.Extensions
             };
 
         }
+
+        public static IQueryable<ReservationDetailsDto> ToReservationDetailsDtos(this IQueryable<Reservation> reservations)
+        {
+            return reservations.Select(r => r.ToReservationDetailsDto());
+        }
     }
 }

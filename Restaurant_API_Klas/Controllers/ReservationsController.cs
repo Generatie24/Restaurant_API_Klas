@@ -23,12 +23,18 @@ namespace Restaurant_API_Klas.Controllers
             var reservations = await _context.Reservations
                 .Include(r => r.Customer)
                 .Include(r => r.Table)
-                .ToListAsync(); 
-            var reservationsDto = reservations.Select(r => r.ToReservationDetailsDto());
+                .ToListAsync();
 
-            //return Ok(reservations.AsQueryable().ToReservationDetailsDto());
+            // use in case of small to middle size data, create variable read data into variable and work with variable
 
-            return Ok(reservationsDto);
+            //var reservationsDto = reservations.Select(r => r.ToReservationDetailsDto());
+            //return Ok(reservationsDto);
+
+
+            // use in case of large data and this is comming directly from database and not variable
+            return Ok(reservations.AsQueryable().ToReservationDetailsDtos());
+
+           
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDetailsDto>> GetReservation(int id)
