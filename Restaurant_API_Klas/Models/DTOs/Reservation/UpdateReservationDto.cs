@@ -1,8 +1,8 @@
 ﻿using Restaurant_API_Klas.Enums;
 
-namespace Restaurant_API_Klas.Models.DTOs
+namespace Restaurant_API_Klas.Models.DTOs.Reservation
 {
-    public class CreateReservationDto
+    public class UpdateReservationDto
     {
         public int CustomerId { get; set; }
         public int TableId { get; set; }

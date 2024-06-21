@@ -1,6 +1,5 @@
 ﻿using Restaurant_API_Klas.Models;
-
-using Restaurant_API_Klas.Models.DTOs;
+using Restaurant_API_Klas.Models.DTOs.Reservation;
 
 namespace Restaurant_API_Klas.Extensions
 {
@@ -19,12 +18,10 @@ namespace Restaurant_API_Klas.Extensions
             };
 
         }
-
         public static IQueryable<ReservationDetailsDto> ToReservationDetailsDtos(this IQueryable<Reservation> reservations)
         {
             return reservations.Select(r => r.ToReservationDetailsDto());
         }
-
         public static Reservation ToReservation(this CreateReservationDto dto)
         {
             return new Reservation
@@ -35,7 +32,6 @@ namespace Restaurant_API_Klas.Extensions
                 SpecialRequests = dto.SpecialRequests
             };
         }
-
         public static void UpdateReservation(this Reservation reservation, UpdateReservationDto dto)
         {
             reservation.CustomerId = dto.CustomerId;
@@ -43,5 +39,8 @@ namespace Restaurant_API_Klas.Extensions
             reservation.DateTime = dto.DateTime;    
             reservation.SpecialRequests = dto.SpecialRequests;
         }
+
+
+      
     }
 }
