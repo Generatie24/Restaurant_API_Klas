@@ -34,7 +34,7 @@ namespace Restaurant_API_Klas.Controllers
             // use in case of large data and this is comming directly from database and not variable
             return Ok(reservations.AsQueryable().ToReservationDetailsDtos());
 
-           
+
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationDetailsDto>> GetReservation(int id)
@@ -50,6 +50,39 @@ namespace Restaurant_API_Klas.Controllers
             }
 
             return Ok(reservation.ToReservationDetailsDto());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ReservationDetailsDto>> PostReserVation(CreateReservationDto dto)
+        {
+            if (!_context.Customers.Any(c => c.CustomerId == dto.CustomerId))
+            {
+                return BadRequest($"Customer with Id {dto.CustomerId} does not exist.");
+            }
+
+            if (!_context.Tables.Any(t => t.TableId == dto.TableId))
+            {
+                return BadRequest($"Table with Id {dto.TableId} does not exist.");
+            }
+
+            var reservation = dto.ToReservation();
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // load related objects for created reservation
+            var createdReservation = await _context.Reservations
+                .Include(r => r.Customer)
+                .Include(r => r.Table)
+                .FirstOrDefaultAsync(r => r.ReservationId == reservation.ReservationId);
+
+
+            // The CreatedAtAction method generates a URI to the GetReservation action, using the id of the newly created reservation.
+            //The URI is included in the Location header of the response, allowing the client to fetch the newly created reservation.
+            // The ToReservationDetailsDto extension method is used to convert the Reservation entity to a ReservationDetailsDto object.
+           
+            return CreatedAtAction(nameof(GetReservation),  // Read Action
+                new { id = reservation.ReservationId },     // Route value
+                createdReservation.ToReservationDetailsDto()); // Response body
         }
 
     }

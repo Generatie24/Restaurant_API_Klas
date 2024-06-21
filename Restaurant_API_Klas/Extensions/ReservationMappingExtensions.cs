@@ -24,5 +24,16 @@ namespace Restaurant_API_Klas.Extensions
         {
             return reservations.Select(r => r.ToReservationDetailsDto());
         }
+
+        public static Reservation ToReservation(this CreateReservationDto dto)
+        {
+            return new Reservation
+            {
+                CustomerId = dto.CustomerId,
+                TableId = dto.TableId,
+                DateTime = dto.DateTime,
+                SpecialRequests = dto.SpecialRequests
+            };
+        }
     }
 }
