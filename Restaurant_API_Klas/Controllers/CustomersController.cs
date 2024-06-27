@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_API_Klas.Data;
-using Restaurant_API_Klas.Models;
 using Restaurant_API_Klas.Extensions;
 using Restaurant_API_Klas.Models.DTOs.Customers;
 
